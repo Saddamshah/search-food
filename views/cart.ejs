@@ -24,7 +24,7 @@
         let message = document.getElementById('message')
         let clearAll = document.getElementById('clearAll');
 
-        const cartEmpty = next => {
+        const cartEmpty = () => {
             if(typeof window !== undefined){
                 localStorage.removeItem("cart")
                 let cart = [];
@@ -38,16 +38,15 @@
             
             let myCart = JSON.parse(localStorage.getItem("cart"))
             
-            if(myCart){
-                let showCart = myCart.map(product => {
-                    return `<li>${product}</li>`
-                })
-                if(showCart.length > 0){
-                    message.innerHTML = "You Products" 
-                    root.innerHTML = showCart.join('')
-                    clearAll.innerHTML = '<a class="clear" onclick="cartEmpty()" >clear All</a>'
-                }
+            let showCart = myCart.map(product => {
+                return `<li>${product}</li>`
+            })
+            if(showCart.length > 0){
+                message.innerHTML = "You Products" 
+                root.innerHTML = showCart.join('')
+                clearAll.innerHTML = '<a class="clear" onclick="cartEmpty()" >clear All</a>'
             }
+            
         }
     </script>
   </body>
