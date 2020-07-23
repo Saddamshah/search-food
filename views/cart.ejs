@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/main.css" />
+    <title>Search Your Food</title>
+  </head>
+  <body>
+    <nav>
+      <h2><a href="/">All Foods</a></h2>
+      <h2><a href="/cart">Cart</a></h2>
+    </nav>
+
+    <div class="container">
+      <h2 id="message"><%= message %></h2>
+      <hr>
+      <div id="root"></div>
+    </div>
+    <div id="clearAll"></div>
+
+    <script>
+        let root = document.getElementById('root')
+        let message = document.getElementById('message')
+        let clearAll = document.getElementById('clearAll');
+
+        const cartEmpty = next => {
+            if(typeof window !== undefined){
+                localStorage.removeItem("cart")
+                let cart = [];
+                localStorage.setItem("cart", JSON.stringify(cart));
+                message.innerHTML = "You Cart is Empty"
+                clearAll.style.display = "none"
+            }   
+        }
+
+        if(localStorage.getItem("cart")){
+            
+            let myCart = JSON.parse(localStorage.getItem("cart"))
+            
+            if(myCart){
+                let showCart = myCart.map(product => {
+                    return `<li>${product}</li>`
+                })
+                if(showCart.length > 0){
+                    message.innerHTML = "You Products" 
+                    root.innerHTML = showCart.join('')
+                    clearAll.innerHTML = '<a class="clear" onclick="cartEmpty()" >clear All</a>'
+                }
+            }
+        }
+    </script>
+  </body>
+</html>

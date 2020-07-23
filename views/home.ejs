@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/main.css" />
+    <title>Search Your Food</title>
+  </head>
+  <body>
+    <nav>
+      <h2><a href="/">All Foods</a></h2>
+      <h2><a href="/cart">Cart</a></h2>
+    </nav>
+
+    <form action="/" method="GET">
+      <input type="text" name="food" placeholder="Search for your Food" autocomplete="off" />
+      <button>Search</button>
+    </form>
+
+    <div class="container">
+      <h2><%= message %></h2>
+
+      <%if(data) { %>
+      <hr />
+      <ul>
+        <p class="heading">
+          <span><b>Name</b></span> 
+          <span><b>Price</b></span> 
+          <span><b>Rating</b></span>
+          <span><b>Stock</b></span> 
+          <span><b>Store</b></span>
+        </p>
+        <% data.forEach(data => { %>
+         <% if(data.stock) { %>
+        <li>
+          <span class="foodName"><%= data.name%></span>
+          <span>₹ <%= data.price%></span> 
+          <span><%= data.rating%></span>
+          <span>In stock</span> 
+          <span><%= data.store%></span>
+        </li>
+        <%} else { %>
+        <li class="outofStock">
+          <span><%= data.name%></span>
+          <span>₹ <%= data.price%> 
+          </span> <span><%= data.rating%></span>
+          <span>out stock</span> 
+          <span><%= data.store%></span>
+        </li>
+        <% }})%>
+      </ul>
+      <%}%>
+    </div>
+
+    <script>
+      let AllList = document.querySelectorAll(".foodName");
+      let addToCart = []
+
+      AllList.forEach((li) => {
+        li.addEventListener("click", function (e) {
+          e.preventDefault()
+
+          let name = e.target.childNodes[0].data
+          let cart = []
+
+          if(typeof window !== undefined){
+              if(localStorage.getItem("cart")) {
+                  cart = JSON.parse(localStorage.getItem("cart"))
+              }
+              cart.push(name)
+              cart = cart.filter((value, index) => cart.indexOf(value) == index);
+              localStorage.setItem("cart", JSON.stringify(cart))
+          }
+
+          alert(`${name} is added`)
+        });
+      });
+    </script>
+  </body>
+</html>
